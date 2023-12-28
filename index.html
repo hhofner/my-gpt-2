@@ -29,8 +29,16 @@
 
 		me .chat {
 			color: white;
+			padding: 0.5rem;
+			font-weight: 700;
+			cursor: pointer;
 		}
-		
+
+		me .selected {
+			background: rgba(222, 222, 222, 0.3);
+			border-radius: 15px;
+		}
+
 		me .opened {
 			left: 0;
 		}
@@ -47,7 +55,7 @@
 				transition: left 0.3s;
 			}
 		</style>
-		<div >
+		<div>
 			<style>
 				me {
 					min-width: 15rem;
@@ -56,18 +64,24 @@
 					padding: 1rem;
 				}
 			</style>
+			<small>
+				<style>
+					me {
+						color: gray;
+						padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+					}
+				</style>
+				Chats
+			</small>
 			<template x-for="chat in chats" :key="chat.id">
-				<div x-text="chat.title" class="chat">
-					<style>
-					</style>
+				<div @click="selectedChat = chat.id" x-text="chat.title" :class="{'chat': true, 'selected': selectedChat == chat.id}">
 				</div>
 			</template>
 		</div>
 		<div>
 			<style>
 				me {
-					overflow-x: hidden
-					width: 100vw;
+					overflow-x: hidden width: 100vw;
 				}
 			</style>
 			<div>
@@ -152,10 +166,16 @@
 				newMessage: '',
 				messages: [],
 				chats: [{
-					id: 1,
-					title: "How to eat..."
-				}],
-				isOpen: false,
+						id: 1,
+						title: "How to eat..."
+					},
+					{
+						id: 2,
+						title: "Instructions on stuff"
+					}
+				],
+				selectedChat: 1,
+				isOpen: true,
 				sendMessage() {
 					if (this.newMessage.trim() === '') return;
 
@@ -175,7 +195,6 @@
 					}
 				},
 				handleOpenSidebar() {
-					console.log("hello")
 					this.isOpen = !this.isOpen
 				}
 			}

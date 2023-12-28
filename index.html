@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#ffffff" />
+	<link rel="manifest" href="manifest.json">
+	<title>Messaging App</title>
+	<!-- Alpine.js CDN for client-side interactions -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3" defer></script> -->
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline/script.js"></script>
+	<link rel="stylesheet" href="index.css">
+	<style>
+		.input-area {
+			padding: 20px;
+			background: #f0f0f0;
+		}
+	</style>
+</head>
+
+<body x-data="messageApp()">
+	<style>
+		me {
+			position: relative;
+			overflow: hidden;
+		}
+
+		me .chat {
+			color: white;
+		}
+		
+		me .opened {
+			left: 0;
+		}
+	</style>
+	<div :class="isOpen ? 'opened' : ''">
+		<style>
+			me {
+				position: absolute;
+				top: 0;
+				width: 100vw;
+				height: 100vw;
+				display: flex;
+				left: -15rem;
+				transition: left 0.3s;
+			}
+		</style>
+		<div >
+			<style>
+				me {
+					min-width: 15rem;
+					height: 100vh;
+					background: black;
+					padding: 1rem;
+				}
+			</style>
+			<template x-for="chat in chats" :key="chat.id">
+				<div x-text="chat.title" class="chat">
+					<style>
+					</style>
+				</div>
+			</template>
+		</div>
+		<div>
+			<style>
+				me {
+					overflow-x: hidden
+					width: 100vw;
+				}
+			</style>
+			<div>
+				<style>
+					me {
+						margin: 0;
+						padding: 0;
+						display: flex;
+						flex-direction: column;
+						height: 100vh;
+						width: 100vw;
+					}
+				</style>
+				<header>
+					<style>
+						me {
+							position: relative;
+							width: 100%;
+							background: rgb(222, 222, 222);
+							padding: 1rem;
+						}
+					</style>
+					<svg @click="handleOpenSidebar()" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+						<style>
+							me {
+								cursor: pointer;
+							}
+						</style>
+						<!-- Solar Icons -->
+						<path fill="currentColor" fill-rule="evenodd" d="M3.464 20.536C4.93 22 7.286 22 12 22c4.714 0 7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464C2 4.93 2 7.286 2 12c0 4.714 0 7.071 1.464 8.535M18.75 16a.75.75 0 0 1-.75.75H6a.75.75 0 0 1 0-1.5h12a.75.75 0 0 1 .75.75M18 12.75a.75.75 0 0 0 0-1.5H6a.75.75 0 0 0 0 1.5zM18.75 8a.75.75 0 0 1-.75.75H6a.75.75 0 0 1 0-1.5h12a.75.75 0 0 1 .75.75" clip-rule="evenodd" />
+					</svg>
+				</header>
+
+				<div class="messages">
+					<style>
+						me {
+							flex-grow: 1;
+							overflow-y: auto;
+							padding: 20px;
+						}
+
+						me .robot {
+							text-align: right;
+						}
+					</style>
+					<template x-for="message in messages" :key="message.id">
+						<div x-text="message.text" x-bind:class="message.type">
+						</div>
+					</template>
+				</div>
+				<div class="input-area">
+					<style>
+						me {
+							position: relative;
+							display: flex;
+							justify-content: center;
+							gap: 2rem;
+						}
+					</style>
+					<small>
+						<style>
+							me {
+								position: absolute;
+								left: 1rem;
+								transform: -translateY(40%);
+								top: 40%;
+								color: rgb(143, 142, 142);
+							}
+						</style>
+						GPT-4
+					</small>
+					<textarea x-model="newMessage" placeholder="Type your message here..." @keydown="handleKeydown($event)"></textarea>
+					<button @click="sendMessage()">Send</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script>
+		function messageApp() {
+			return {
+				newMessage: '',
+				messages: [],
+				chats: [{
+					id: 1,
+					title: "How to eat..."
+				}],
+				isOpen: false,
+				sendMessage() {
+					if (this.newMessage.trim() === '') return;
+
+					this.messages.push({
+						id: Date.now(),
+						text: this.newMessage,
+						type: "user"
+					});
+
+					this.newMessage = '';
+				},
+				handleKeydown(event) {
+					// Check if Command+Enter or Ctrl+Enter is pressed
+					const isCmdEnter = (event.metaKey || event.ctrlKey) && event.key === 'Enter';
+					if (isCmdEnter) {
+						this.sendMessage();
+					}
+				},
+				handleOpenSidebar() {
+					console.log("hello")
+					this.isOpen = !this.isOpen
+				}
+			}
+		}
+	</script>
+</body>
+
+</html>

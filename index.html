@@ -100,6 +100,7 @@
 						me {
 							position: relative;
 							width: 100%;
+							display: flex;
 							background: rgb(222, 222, 222);
 							padding: 1rem;
 						}
@@ -140,6 +141,12 @@
 							justify-content: center;
 							gap: 2rem;
 						}
+						me textarea {
+							border-radius: 10px;
+							width: 15rem;
+							padding: 0.15rem 0.25rem 0.15rem 0.25rem;
+							border-color: rgb(200, 199, 199);
+						}
 					</style>
 					<small>
 						<style>
@@ -153,8 +160,16 @@
 						</style>
 						GPT-4
 					</small>
-					<textarea x-model="newMessage" placeholder="Type your message here..." @keydown="handleKeydown($event)"></textarea>
-					<button @click="sendMessage()">Send</button>
+					<textarea x-model="newMessage" placeholder="Type your message here..." @keydown="handleKeydown($event)">
+					</textarea>
+					<button @click="sendMessage()">
+						<style>
+							me {
+								border-radius: 10px;
+							}
+						</style>
+						Send
+					</button>
 				</div>
 
 			</div>
@@ -175,7 +190,7 @@
 					}
 				],
 				selectedChat: 1,
-				isOpen: true,
+				isOpen: false,
 				sendMessage() {
 					if (this.newMessage.trim() === '') return;
 

@@ -11,6 +11,7 @@
 	<!-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3" defer></script> -->
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline/script.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked@1.1.0/marked.min.js" integrity="sha256-GGbzkRkTtLnv3bOg61WAnkjYHxtsiVqu+tjMj6ssDVw=" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="index.css">
 	<style>
 		.input-area {
@@ -134,10 +135,6 @@
 							padding: 20px;
 						}
 
-						me .robot {
-							text-align: right;
-						}
-
 						me .message {
 							display: flex;
 						}
@@ -174,7 +171,7 @@
 							<div>
 								<template x-if="message.type === 'user'"><span>You</span></template>
 								<template x-if="message.type === 'robot'"><span>Chat</span></template>
-								<div x-text="message.text" x-bind:class="message.type">
+								<div x-html="message.text" x-bind:class="message.type">
 								</div>
 							</div>
 						</div>
@@ -253,7 +250,7 @@
 
 					this.messages.push({
 						id: Date.now(),
-						text: this.newMessage,
+						text: marked(this.newMessage),
 						type: "robot"
 					});
 
